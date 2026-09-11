@@ -86,7 +86,8 @@ export function EditPromptPage() {
       setThumbnails(urls);
     };
     if (mediaFiles.length > 0) loadThumbnails();
-  }, [mediaFiles]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [mediaFiles.map((f) => f.id).join(',')]);
 
   const onSubmit = async (data: FormData) => {
     if (!id) return;

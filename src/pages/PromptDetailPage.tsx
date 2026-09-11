@@ -64,7 +64,8 @@ export function PromptDetailPage() {
     };
     if (mediaFiles.length > 0) loadUrls();
     else setMediaWithUrls([]);
-  }, [mediaFiles]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [mediaFiles.map((f) => f.id).join(',')]);
 
   const handleCopy = async () => {
     if (!prompt) return;
