@@ -405,7 +405,7 @@ export function SubmitPromptPage() {
               <button
                 key={type}
                 type="button"
-                onClick={() => { setPromptType(type); setPlatform(''); }}
+                onClick={() => { setPromptType(type); setPlatform(''); clearMedia(); }}
                 className={cn(
                   'flex flex-col items-center gap-3 p-5 rounded-xl border-2 transition-all duration-150',
                   promptType === type
