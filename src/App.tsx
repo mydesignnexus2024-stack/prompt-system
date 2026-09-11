@@ -21,16 +21,9 @@ import { PrivacyPolicyPage } from './pages/legal/PrivacyPolicyPage';
 import { RefundPolicyPage } from './pages/legal/RefundPolicyPage';
 
 // Heavy app pages — lazy loaded for fast initial bundle
-const ProjectPage       = lazy(() => import('./pages/ProjectPage').then((m) => ({ default: m.ProjectPage })));
-const ProjectFilesPage  = lazy(() => import('./pages/ProjectFilesPage').then((m) => ({ default: m.ProjectFilesPage })));
-const NewPromptPage     = lazy(() => import('./pages/NewPromptPage').then((m) => ({ default: m.NewPromptPage })));
+const ExplorePromptsPage = lazy(() => import('./pages/ExplorePromptsPage').then((m) => ({ default: m.ExplorePromptsPage })));
 const PromptDetailPage  = lazy(() => import('./pages/PromptDetailPage').then((m) => ({ default: m.PromptDetailPage })));
-const EditPromptPage    = lazy(() => import('./pages/EditPromptPage').then((m) => ({ default: m.EditPromptPage })));
-const NotionPageEditor  = lazy(() => import('./pages/NotionPageEditor').then((m) => ({ default: m.NotionPageEditor })));
-const SharePage         = lazy(() => import('./pages/SharePage').then((m) => ({ default: m.SharePage })));
-const ExplorePromptsPage     = lazy(() => import('./pages/ExplorePromptsPage').then((m) => ({ default: m.ExplorePromptsPage })));
-const SettingsPage        = lazy(() => import('./pages/SettingsPage').then((m) => ({ default: m.SettingsPage })));
-const SubmitPromptPage    = lazy(() => import('./pages/SubmitPromptPage').then((m) => ({ default: m.SubmitPromptPage })));
+const SubmitPromptPage   = lazy(() => import('./pages/SubmitPromptPage').then((m) => ({ default: m.SubmitPromptPage })));
 
 // Re-throws chunk-load errors so the root ErrorBoundary in main.tsx catches them
 // and shows the "App updated — please reload" screen instead of a blank skeleton.
@@ -104,18 +97,10 @@ export default function App() {
               <Route path="/refund" element={<RefundPolicyPage />} />
 
               {/* Standalone pages — no AppShell wrapper */}
-              <Route path="/share/:shareId" element={<SharePage />} />
               <Route path="/submit" element={<SubmitPromptPage />} />
 
               <Route element={<ProtectedRoute />}>
-                <Route path="/projects" element={<Navigate to="/" replace />} />
-                <Route path="/projects/:slug" element={<ProjectPage />} />
-                <Route path="/projects/:slug/files" element={<ProjectFilesPage />} />
-                <Route path="/projects/:slug/new" element={<NewPromptPage />} />
-                <Route path="/projects/:slug/pages/:pageId" element={<NotionPageEditor />} />
                 <Route path="/prompts/:id" element={<PromptDetailPage />} />
-                <Route path="/prompts/:id/edit" element={<EditPromptPage />} />
-                <Route path="/settings" element={<SettingsPage />} />
               </Route>
 
               <Route path="*" element={<NotFoundPage />} />

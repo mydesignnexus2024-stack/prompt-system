@@ -57,7 +57,6 @@ export function AuthModal({ open, onClose, defaultTab = 'login', onSuccess }: Pr
         onSuccess?.();
       }
     } else {
-      // Quick signup via OTP flow — redirect to full signup page for full flow
       toast.info('Creating your account...');
       const res = await fetch(`${supabaseUrl}/functions/v1/send-otp`, {
         method: 'POST',
@@ -79,7 +78,6 @@ export function AuthModal({ open, onClose, defaultTab = 'login', onSuccess }: Pr
     <AnimatePresence>
       {open && (
         <>
-          {/* Backdrop */}
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
@@ -89,7 +87,6 @@ export function AuthModal({ open, onClose, defaultTab = 'login', onSuccess }: Pr
             onClick={onClose}
           />
 
-          {/* Modal */}
           <motion.div
             initial={{ opacity: 0, scale: 0.95, y: 20 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
@@ -98,11 +95,9 @@ export function AuthModal({ open, onClose, defaultTab = 'login', onSuccess }: Pr
             className="fixed inset-0 flex items-center justify-center z-[10001] p-4 pointer-events-none"
           >
             <div className="bg-white rounded-2xl shadow-2xl w-full max-w-sm pointer-events-auto overflow-hidden">
-              {/* Top accent */}
               <div className="h-1 w-full bg-gradient-to-r from-brand-400 via-blue-400 to-brand-300" />
 
               <div className="p-6">
-                {/* Header */}
                 <div className="flex items-center justify-between mb-5">
                   <div className="flex items-center gap-2.5">
                     <img src="/aiwithrakshith-tech-logo.webp" alt="aiwithrakshith.tech" className="h-8 w-8 object-contain" />
@@ -116,7 +111,6 @@ export function AuthModal({ open, onClose, defaultTab = 'login', onSuccess }: Pr
                   </button>
                 </div>
 
-                {/* Tabs */}
                 <div className="flex bg-ink-100 rounded-xl p-1 mb-5">
                   {(['login', 'signup'] as const).map((t) => (
                     <button
@@ -133,7 +127,6 @@ export function AuthModal({ open, onClose, defaultTab = 'login', onSuccess }: Pr
                   ))}
                 </div>
 
-                {/* Google button */}
                 <button
                   type="button"
                   onClick={handleGoogle}

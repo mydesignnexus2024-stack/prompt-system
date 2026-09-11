@@ -1,50 +1,14 @@
 # Supabase project configuration
 # Used by the deploy_edge_functions MCP tool to determine verify_jwt per function.
 
-[functions.get-course-share]
-verify_jwt = true
-
-[functions.get-lesson-video]
-verify_jwt = true
-
-[functions.get-published-media-url]
-verify_jwt = true
-
-[functions.get-share]
-verify_jwt = true
-
-[functions.log-protection-event]
-verify_jwt = true
-
-[functions.send-certificate-email]
-verify_jwt = true
-
 [functions.send-otp]
 verify_jwt = false
 
 [functions.send-reset-email]
 verify_jwt = false
 
-[functions.submit-bug-report]
-verify_jwt = false
-
 [functions.submit-notify-signup]
 verify_jwt = false
-
-[functions.todo-completed]
-verify_jwt = true
-
-[functions.todo-created]
-verify_jwt = true
-
-[functions.todo-overdue]
-verify_jwt = true
-
-[functions.todo-reminder]
-verify_jwt = true
-
-[functions.upload-cert-assets]
-verify_jwt = true
 
 [functions.verify-login-captcha]
 verify_jwt = false

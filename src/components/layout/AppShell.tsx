@@ -97,15 +97,6 @@ export function AppShell({ children }: { children: React.ReactNode }) {
                       <p className="text-sm font-medium text-ink-900 truncate">{user.email}</p>
                     </div>
 
-                    <Link
-                      to="/settings"
-                      onClick={() => setUserMenuOpen(false)}
-                      className="w-full flex items-center gap-2.5 px-4 py-3 text-sm text-ink-700 hover:bg-ink-50 transition-colors font-medium"
-                    >
-                      <Icon name="settings" size={16} className="text-ink-500" />
-                      Settings
-                    </Link>
-
                     <button
                       onClick={handleSignOut}
                       className="w-full flex items-center gap-2.5 px-4 py-3 text-sm text-danger hover:bg-red-50 transition-colors font-medium"
