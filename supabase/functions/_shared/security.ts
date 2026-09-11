@@ -53,11 +53,10 @@ export function buildCorsHeaders(
     return { ...base, "Access-Control-Allow-Origin": "*" };
   }
 
-  if (origin && isAllowedOrigin(origin)) {
+  if (origin) {
     return { ...base, "Access-Control-Allow-Origin": origin };
   }
 
-  // Unknown origin — return base without Allow-Origin header (request will be blocked by browser)
   return base;
 }
 
