@@ -206,6 +206,7 @@ export function useUpdatePrompt() {
     onSuccess: (data) => {
       qc.invalidateQueries({ queryKey: ['prompts'] });
       qc.invalidateQueries({ queryKey: ['prompt', data.id] });
+      qc.invalidateQueries({ queryKey: ['prompts', 'published'] });
     },
   });
 }
@@ -240,7 +241,10 @@ export function useAddMediaFile() {
       if (error) throw error;
       return data as MediaFile;
     },
-    onSuccess: (data) => qc.invalidateQueries({ queryKey: ['media', data.prompt_id] }),
+    onSuccess: (data) => {
+      qc.invalidateQueries({ queryKey: ['media', data.prompt_id] });
+      qc.invalidateQueries({ queryKey: ['prompts', 'published'] });
+    },
   });
 }
 
@@ -253,7 +257,10 @@ export function useDeleteMediaFile() {
       if (error) throw error;
       return { promptId };
     },
-    onSuccess: ({ promptId }) => qc.invalidateQueries({ queryKey: ['media', promptId] }),
+    onSuccess: ({ promptId }) => {
+      qc.invalidateQueries({ queryKey: ['media', promptId] });
+      qc.invalidateQueries({ queryKey: ['prompts', 'published'] });
+    },
   });
 }
 
