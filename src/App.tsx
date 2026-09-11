@@ -21,13 +21,11 @@ import { PrivacyPolicyPage } from './pages/legal/PrivacyPolicyPage';
 import { RefundPolicyPage } from './pages/legal/RefundPolicyPage';
 
 // Heavy app pages — lazy loaded for fast initial bundle
-const DashboardPage     = lazy(() => import('./pages/DashboardPage').then((m) => ({ default: m.DashboardPage })));
 const ProjectPage       = lazy(() => import('./pages/ProjectPage').then((m) => ({ default: m.ProjectPage })));
 const ProjectFilesPage  = lazy(() => import('./pages/ProjectFilesPage').then((m) => ({ default: m.ProjectFilesPage })));
 const NewPromptPage     = lazy(() => import('./pages/NewPromptPage').then((m) => ({ default: m.NewPromptPage })));
 const PromptDetailPage  = lazy(() => import('./pages/PromptDetailPage').then((m) => ({ default: m.PromptDetailPage })));
 const EditPromptPage    = lazy(() => import('./pages/EditPromptPage').then((m) => ({ default: m.EditPromptPage })));
-const TodoPage          = lazy(() => import('./pages/TodoPage').then((m) => ({ default: m.TodoPage })));
 const NotionPageEditor  = lazy(() => import('./pages/NotionPageEditor').then((m) => ({ default: m.NotionPageEditor })));
 const SharePage         = lazy(() => import('./pages/SharePage').then((m) => ({ default: m.SharePage })));
 const ExplorePromptsPage     = lazy(() => import('./pages/ExplorePromptsPage').then((m) => ({ default: m.ExplorePromptsPage })));
@@ -63,7 +61,7 @@ const queryClient = new QueryClient({
 });
 
 function RootGate() {
-  return <Navigate to="/dashboard" replace />;
+  return <Navigate to="/explore" replace />;
 }
 
 function PageFallback() {
@@ -106,15 +104,13 @@ export default function App() {
               <Route path="/share/:shareId" element={<SharePage />} />
 
               <Route element={<ProtectedRoute />}>
-                <Route path="/dashboard" element={<DashboardPage />} />
-                <Route path="/projects" element={<Navigate to="/dashboard" replace />} />
+                <Route path="/projects" element={<Navigate to="/explore" replace />} />
                 <Route path="/projects/:slug" element={<ProjectPage />} />
                 <Route path="/projects/:slug/files" element={<ProjectFilesPage />} />
                 <Route path="/projects/:slug/new" element={<NewPromptPage />} />
                 <Route path="/projects/:slug/pages/:pageId" element={<NotionPageEditor />} />
                 <Route path="/prompts/:id" element={<PromptDetailPage />} />
                 <Route path="/prompts/:id/edit" element={<EditPromptPage />} />
-                <Route path="/todos" element={<TodoPage />} />
                 <Route path="/explore" element={<ExplorePromptsPage />} />
               </Route>
 

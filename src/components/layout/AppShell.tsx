@@ -259,15 +259,11 @@ function ProjectThumb({ project }: { project: Project }) {
 interface NavItem { label: string; href: string; icon: string; badge?: string }
 
 const mainNav: NavItem[] = [
-  { label: 'Dashboard', href: '/dashboard', icon: 'dashboard' },
   { label: 'Explore Prompts', href: '/explore', icon: 'explore' },
-  { label: 'Todos', href: '/todos', icon: 'checklist' },
 ];
 
 const bottomNav = [
-  { href: '/dashboard', icon: 'dashboard', label: 'Home' },
   { href: '/explore', icon: 'explore', label: 'Explore' },
-  { href: '/todos', icon: 'checklist', label: 'Todos' },
 ];
 
 // ── Sidebar nav content ───────────────────────────────────────────────────────
@@ -292,7 +288,7 @@ function SidebarNav({
   return (
     <>
       <div className="flex items-center justify-between gap-2 px-4 py-4 border-b border-ink-300 flex-shrink-0">
-        <Link to="/dashboard" className="flex items-center gap-2.5" onClick={onClose}>
+        <Link to="/explore" className="flex items-center gap-2.5" onClick={onClose}>
           <img src="/aiwithrakshith-tech-logo.webp" alt="aiwithrakshith.tech" className="h-8 w-8 object-contain flex-shrink-0" />
           <span className="font-display font-black text-ink-900 tracking-tight leading-none" style={{ fontSize: '13px', letterSpacing: '-0.02em' }}>aiwithrakshith</span>
         </Link>
@@ -439,7 +435,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
   const handleSignOut = async () => {
     closeSidebar();
     await signOut();
-    navigate('/');
+    navigate('/explore');
   };
 
   const isActive = (href: string) =>
@@ -496,7 +492,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
           >
             <Icon name="menu" size={22} />
           </button>
-          <Link to="/dashboard" className="flex items-center gap-2">
+          <Link to="/explore" className="flex items-center gap-2">
             <img src="/aiwithrakshith-tech-logo.webp" alt="aiwithrakshith.tech" className="h-7 w-7 object-contain flex-shrink-0" />
             <span className="font-display font-black text-ink-900 tracking-tight leading-none" style={{ fontSize: '12px', letterSpacing: '-0.02em' }}>aiwithrakshith</span>
           </Link>
@@ -514,8 +510,8 @@ export function AppShell({ children }: { children: React.ReactNode }) {
           <div className="flex relative">
             {bottomNav.map((item) => {
               const active = location.pathname === item.href ||
-                (item.href !== '/dashboard' && location.pathname.startsWith(item.href + '/')) ||
-                (item.href === '/dashboard' && location.pathname === '/dashboard');
+                (item.href !== '/explore' && location.pathname.startsWith(item.href + '/')) ||
+                (item.href === '/explore' && location.pathname === '/explore');
               return (
                 <Link
                   key={item.href}

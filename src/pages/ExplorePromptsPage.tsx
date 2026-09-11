@@ -959,7 +959,7 @@ export function ExplorePromptsPage() {
               </p>
               {!(search || activePlatform !== 'All') && (
                 <Link
-                  to="/dashboard"
+                  to="/explore"
                   className="mt-5 bg-ink-900 text-white text-xs font-semibold px-4 py-2 rounded-xl hover:bg-ink-700 transition-colors"
                 >
                   Go to my prompts
