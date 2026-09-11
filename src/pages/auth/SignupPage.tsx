@@ -270,6 +270,7 @@ function OtpScreen({
 
 export function SignupPage() {
   const { signInWithGoogle } = useAuth();
+  const navigate = useNavigate();
   const [showPw, setShowPw] = useState(false);
   const [otpSent, setOtpSent] = useState(false);
   const [submittedEmail, setSubmittedEmail] = useState('');
@@ -328,7 +329,14 @@ export function SignupPage() {
       });
       const json = await res.json();
       if (!res.ok || !json.success) {
-        toast.error(json.error ?? 'Failed to send verification code');
+        if (json.error === 'email_already_exists') {
+          toast.error('An account with this email already exists. Please sign in instead.', {
+            duration: 6000,
+            action: { label: 'Sign in', onClick: () => navigate('/login') },
+          });
+        } else {
+          toast.error(json.error ?? 'Failed to send verification code');
+        }
         resetTurnstile();
         setCaptchaToken(null);
         captchaRef.current = null;

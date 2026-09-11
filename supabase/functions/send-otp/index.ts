@@ -114,6 +114,30 @@ Deno.serve(async (req: Request) => {
       return tooManyRequestsResponse(byIp, corsHeaders);
     }
 
+    // Check if an account already exists for this email
+    let existingUser: { id: string } | null = null;
+    try {
+      const { data, error } = await supabase
+        .from("auth.users" as any)
+        .select("id")
+        .eq("email", email)
+        .maybeSingle();
+      if (!error && data) existingUser = data as { id: string };
+    } catch {
+      try {
+        const { data } = await (supabase.auth.admin as any).getUserByEmail(email);
+        if (data?.user) existingUser = data.user;
+      } catch { /* user doesn't exist */ }
+    }
+
+    if (existingUser) {
+      await logAudit(supabase, { action: "send-otp.email_exists", metadata: { email }, ip });
+      return new Response(JSON.stringify({
+        error: "email_already_exists",
+        message: "An account with this email already exists. Please sign in instead.",
+      }), { status: 409, headers: { ...corsHeaders, "Content-Type": "application/json" } });
+    }
+
     const resendApiKey = Deno.env.get("RESEND_API_KEY")!;
 
     // Invalidate previous unused OTPs
