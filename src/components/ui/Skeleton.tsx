@@ -31,20 +31,6 @@ export function PromptCardSkeleton() {
   );
 }
 
-export function ProjectCardSkeleton() {
-  return <Skeleton className="h-52 w-full rounded-lg" />;
-}
-
-export function FileGridSkeleton({ count = 12 }: { count?: number }) {
-  return (
-    <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-3">
-      {Array.from({ length: count }).map((_, i) => (
-        <Skeleton key={i} className="aspect-square rounded-lg" />
-      ))}
-    </div>
-  );
-}
-
 export function ListRowSkeleton({ count = 6 }: { count?: number }) {
   return (
     <div className="space-y-0">
@@ -56,22 +42,6 @@ export function ListRowSkeleton({ count = 6 }: { count?: number }) {
             <Skeleton className="h-3 w-1/3" />
           </div>
           <Skeleton className="h-3 w-16 hidden sm:block" />
-        </div>
-      ))}
-    </div>
-  );
-}
-
-export function TodoCardSkeleton({ count = 4 }: { count?: number }) {
-  return (
-    <div className="space-y-0 divide-y divide-ink-300">
-      {Array.from({ length: count }).map((_, i) => (
-        <div key={i} className="flex gap-4 py-3">
-          <Skeleton className="w-5 h-5 rounded-full flex-shrink-0 mt-0.5" />
-          <div className="flex-1 space-y-2">
-            <Skeleton className="h-4 w-4/5" />
-            <Skeleton className="h-3 w-2/5" />
-          </div>
         </div>
       ))}
     </div>

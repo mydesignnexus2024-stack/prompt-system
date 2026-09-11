@@ -33,22 +33,3 @@ export const STATUS_COLORS: Record<string, string> = {
   archived: 'bg-orange-100 text-orange-700 border-orange-200',
 };
 
-export const PROJECT_COLORS: Record<string, string> = {
-  blue:   'from-blue-600 to-blue-800',
-  purple: 'from-brand-400 to-brand-700',
-  green:  'from-green-600 to-green-800',
-  red:    'from-red-600 to-red-800',
-  orange: 'from-orange-600 to-orange-800',
-  pink:   'from-pink-600 to-pink-800',
-  gray:   'from-ink-500 to-ink-700',
-};
-
-export const PROJECT_BORDER_COLORS: Record<string, string> = {
-  blue:   'border-blue-300 hover:border-blue-500',
-  purple: 'border-brand-200 hover:border-brand-400',
-  green:  'border-green-300 hover:border-green-500',
-  red:    'border-red-300 hover:border-red-500',
-  orange: 'border-orange-300 hover:border-orange-500',
-  pink:   'border-pink-300 hover:border-pink-500',
-  gray:   'border-ink-300 hover:border-ink-500',
-};

@@ -8,7 +8,6 @@ export interface Database {
       prompts: {
         Row: {
           id: string;
-          project_id: string;
           user_id: string;
           title: string;
           prompt_text: string;
@@ -22,7 +21,6 @@ export interface Database {
         };
         Insert: {
           id?: string;
-          project_id: string;
           user_id: string;
           title: string;
           prompt_text: string;
@@ -36,7 +34,6 @@ export interface Database {
         };
         Update: {
           id?: string;
-          project_id?: string;
           user_id?: string;
           title?: string;
           prompt_text?: string;

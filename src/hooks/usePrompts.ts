@@ -23,7 +23,7 @@ export interface PromptStats {
   user_has_liked: boolean;
 }
 
-export function usePrompts(projectId?: string) {
+export function usePrompts() {
   const { user } = useAuth();
   const qc = useQueryClient();
 
@@ -31,27 +31,25 @@ export function usePrompts(projectId?: string) {
     if (!user) return;
 
     const channel = supabase
-      .channel(`prompts:user:${user.id}:${projectId ?? 'all'}`)
+      .channel(`prompts:user:${user.id}`)
       .on(
         'postgres_changes',
         { event: '*', schema: 'public', table: 'prompts', filter: `user_id=eq.${user.id}` },
-        () => { qc.invalidateQueries({ queryKey: ['prompts', projectId, user.id] }); },
+        () => { qc.invalidateQueries({ queryKey: ['prompts', user.id] }); },
       )
       .subscribe();
 
     return () => { supabase.removeChannel(channel); };
-  }, [user, projectId, qc]);
+  }, [user, qc]);
 
   return useQuery({
-    queryKey: ['prompts', projectId, user?.id],
+    queryKey: ['prompts', user?.id],
     queryFn: async () => {
-      let query = supabase
+      const { data, error } = await supabase
         .from('prompts')
         .select('*')
         .eq('user_id', user!.id)
         .order('created_at', { ascending: false });
-      if (projectId) query = query.eq('project_id', projectId);
-      const { data, error } = await query;
       if (error) throw error;
       return data as Prompt[];
     },
@@ -113,7 +111,6 @@ export function usePromptMedia(promptId: string) {
 }
 
 interface PromptInput {
-  project_id: string;
   title: string;
   prompt_text: string;
   platform: string;

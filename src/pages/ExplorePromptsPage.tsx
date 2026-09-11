@@ -406,7 +406,7 @@ function DetailModal({
                   </div>
                   <div className="min-w-0">
                     <p className="text-[14px] font-bold text-ink-900 truncate">{prompt.title}</p>
-                    <p className="text-[12px] text-ink-400 truncate">@{prompt.project_name || 'user'}</p>
+                    <p className="text-[12px] text-ink-400 truncate">@user</p>
                   </div>
                 </div>
                 <div className="flex flex-col items-end justify-end self-end">

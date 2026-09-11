@@ -181,7 +181,7 @@ export function PrivacyPolicyPage() {
               <div className="grid sm:grid-cols-2 gap-3">
                 <InfoCard label="Account Information" desc="Your email address and password (stored as a bcrypt hash — we never see your raw password)." />
                 <InfoCard label="Profile Information" desc="Display name and avatar image you optionally choose to provide." />
-                <InfoCard label="User Content" desc="Prompts, projects, notes, todos, course progress, and any files you upload to the platform." />
+                <InfoCard label="User Content" desc="Prompts and any media files you upload to the platform." />
                 <InfoCard label="Usage Data" desc="Log data including IP address, browser type, pages visited, and actions taken within the Service." />
                 <InfoCard label="Device Information" desc="Device type, operating system, and browser version for compatibility and debugging." />
               </div>
@@ -217,12 +217,6 @@ export function PrivacyPolicyPage() {
                 <p>
                   Your data is stored on Supabase, which provides enterprise-grade infrastructure with encryption at rest (AES-256) and in transit (TLS 1.3). Passwords are stored as bcrypt hashes and are never accessible by our team.
                 </p>
-                <div className="p-4 rounded-xl bg-green-50 border border-green-200">
-                  <p className="text-sm font-semibold text-green-800 mb-1">Password Vault Encryption</p>
-                  <p className="text-sm text-green-700 leading-relaxed">
-                    Vault entries are encrypted <strong>client-side</strong> using AES-256-GCM with PBKDF2 key derivation before being sent to our servers. This means we are mathematically unable to read your saved passwords — even with full database access.
-                  </p>
-                </div>
                 <p>
                   File uploads are stored in private, access-controlled storage buckets. Signed URLs with short expiry times are used to serve files securely.
                 </p>
