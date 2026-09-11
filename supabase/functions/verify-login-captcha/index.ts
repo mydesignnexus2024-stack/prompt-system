@@ -1,3 +1,4 @@
+// verify-login-captcha: public endpoint (no JWT required) — secured by CAPTCHA + rate limiting
 import "jsr:@supabase/functions-js/edge-runtime.d.ts";
 import {
   adminClient, buildCorsHeaders, getClientIp,

@@ -1,3 +1,4 @@
+// verify-otp: public endpoint (no JWT required) — secured by OTP validation + rate limiting
 import "jsr:@supabase/functions-js/edge-runtime.d.ts";
 import {
   adminClient, buildCorsHeaders, getClientIp,
