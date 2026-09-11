@@ -3,7 +3,6 @@ import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { Toaster } from 'sonner';
 import { AuthProvider } from './contexts/AuthContext';
-import { VaultProvider } from './contexts/VaultContext';
 import { ProtectedRoute } from './components/layout/ProtectedRoute';
 import { LenisScrollManager } from './components/layout/LenisScrollManager';
 import { Skeleton } from './components/ui/Skeleton';
@@ -28,22 +27,10 @@ const ProjectFilesPage  = lazy(() => import('./pages/ProjectFilesPage').then((m)
 const NewPromptPage     = lazy(() => import('./pages/NewPromptPage').then((m) => ({ default: m.NewPromptPage })));
 const PromptDetailPage  = lazy(() => import('./pages/PromptDetailPage').then((m) => ({ default: m.PromptDetailPage })));
 const EditPromptPage    = lazy(() => import('./pages/EditPromptPage').then((m) => ({ default: m.EditPromptPage })));
-const SettingsPage      = lazy(() => import('./pages/SettingsPage').then((m) => ({ default: m.SettingsPage })));
 const TodoPage          = lazy(() => import('./pages/TodoPage').then((m) => ({ default: m.TodoPage })));
 const NotionPageEditor  = lazy(() => import('./pages/NotionPageEditor').then((m) => ({ default: m.NotionPageEditor })));
 const SharePage         = lazy(() => import('./pages/SharePage').then((m) => ({ default: m.SharePage })));
-const PasswordVaultPage = lazy(() => import('./pages/PasswordVaultPage').then((m) => ({ default: m.PasswordVaultPage })));
-const CoursesPage       = lazy(() => import('./pages/CoursesPage').then((m) => ({ default: m.CoursesPage })));
-const CourseEditorPage  = lazy(() => import('./pages/CourseEditorPage').then((m) => ({ default: m.CourseEditorPage })));
-const CoursePlayerPage  = lazy(() => import('./pages/CoursePlayerPage').then((m) => ({ default: m.CoursePlayerPage })));
-const CertificatePage   = lazy(() => import('./pages/CertificatePage').then((m) => ({ default: m.CertificatePage })));
-const PortfolioPage     = lazy(() => import('./pages/PortfolioPage').then((m) => ({ default: m.PortfolioPage })));
-const CourseSharePage   = lazy(() => import('./pages/CourseSharePage').then((m) => ({ default: m.CourseSharePage })));
 const ExplorePromptsPage     = lazy(() => import('./pages/ExplorePromptsPage').then((m) => ({ default: m.ExplorePromptsPage })));
-const PublicCertificatePage  = lazy(() => import('./pages/PublicCertificatePage').then((m) => ({ default: m.PublicCertificatePage })));
-const PublicPortfolioPage    = lazy(() => import('./pages/PublicPortfolioPage').then((m) => ({ default: m.PublicPortfolioPage })));
-const ImageReducerPage       = lazy(() => import('./pages/ImageReducerPage').then((m) => ({ default: m.ImageReducerPage })));
-const ImageConverterPage     = lazy(() => import('./pages/ImageConverterPage').then((m) => ({ default: m.ImageConverterPage })));
 
 // Re-throws chunk-load errors so the root ErrorBoundary in main.tsx catches them
 // and shows the "App updated — please reload" screen instead of a blank skeleton.
@@ -99,7 +86,6 @@ export default function App() {
   return (
     <QueryClientProvider client={queryClient}>
       <AuthProvider>
-        <VaultProvider>
         <BrowserRouter>
           <LenisScrollManager />
           <ChunkErrorBoundary>
@@ -116,14 +102,8 @@ export default function App() {
               <Route path="/privacy" element={<PrivacyPolicyPage />} />
               <Route path="/refund" element={<RefundPolicyPage />} />
 
-              {/* Public pages — no auth required */}
-              <Route path="/c/:slug" element={<PublicCertificatePage />} />
-              <Route path="/p/:slug" element={<PublicPortfolioPage />} />
-
               {/* Standalone pages — no AppShell wrapper */}
               <Route path="/share/:shareId" element={<SharePage />} />
-              <Route path="/courses/share/:shareId" element={<CourseSharePage />} />
-              <Route path="/courses/:courseId/learn" element={<CoursePlayerPage />} />
 
               <Route element={<ProtectedRoute />}>
                 <Route path="/dashboard" element={<DashboardPage />} />
@@ -135,14 +115,6 @@ export default function App() {
                 <Route path="/prompts/:id" element={<PromptDetailPage />} />
                 <Route path="/prompts/:id/edit" element={<EditPromptPage />} />
                 <Route path="/todos" element={<TodoPage />} />
-                <Route path="/vault" element={<PasswordVaultPage />} />
-                <Route path="/settings" element={<SettingsPage />} />
-                <Route path="/image-reducer" element={<ImageReducerPage />} />
-                <Route path="/image-converter" element={<ImageConverterPage />} />
-                <Route path="/courses" element={<CoursesPage />} />
-                <Route path="/courses/:courseId/edit" element={<CourseEditorPage />} />
-                <Route path="/courses/:courseId/certificate" element={<CertificatePage />} />
-                <Route path="/portfolio" element={<PortfolioPage />} />
                 <Route path="/explore" element={<ExplorePromptsPage />} />
               </Route>
 
@@ -164,7 +136,6 @@ export default function App() {
             },
           }}
         />
-        </VaultProvider>
       </AuthProvider>
     </QueryClientProvider>
   );

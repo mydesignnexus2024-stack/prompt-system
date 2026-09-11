@@ -261,21 +261,13 @@ interface NavItem { label: string; href: string; icon: string; badge?: string }
 const mainNav: NavItem[] = [
   { label: 'Dashboard', href: '/dashboard', icon: 'dashboard' },
   { label: 'Explore Prompts', href: '/explore', icon: 'explore' },
-  { label: 'Courses', href: '/courses', icon: 'school' },
-  { label: 'Certificates / Portfolio', href: '/portfolio', icon: 'workspace_premium' },
   { label: 'Todos', href: '/todos', icon: 'checklist' },
-  { label: 'Image Reducer', href: '/image-reducer', icon: 'photo_size_select_large', badge: 'NEW' },
-  { label: 'Image Converter', href: '/image-converter', icon: 'swap_horiz', badge: 'NEW' },
-  { label: 'Password Vault', href: '/vault', icon: 'shield' },
-  { label: 'Settings', href: '/settings', icon: 'settings' },
 ];
 
 const bottomNav = [
   { href: '/dashboard', icon: 'dashboard', label: 'Home' },
-  { href: '/courses', icon: 'school', label: 'Courses' },
   { href: '/explore', icon: 'explore', label: 'Explore' },
   { href: '/todos', icon: 'checklist', label: 'Todos' },
-  { href: '/settings', icon: 'settings', label: 'Settings' },
 ];
 
 // ── Sidebar nav content ───────────────────────────────────────────────────────
