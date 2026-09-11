@@ -4,7 +4,7 @@ import Lenis from 'lenis';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 
-const LENIS_ROUTES = ['/', '/pricing', '/terms', '/privacy', '/refund'];
+const LENIS_ROUTES = ['/', '/terms', '/privacy', '/refund'];
 const LENIS_PREFIXES = ['/c/'];
 
 function shouldEnableLenis(pathname: string): boolean {

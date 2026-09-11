@@ -2,7 +2,7 @@ import { lazy, Suspense, Component, type ReactNode } from 'react';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { Toaster } from 'sonner';
-import { AuthProvider, useAuth } from './contexts/AuthContext';
+import { AuthProvider } from './contexts/AuthContext';
 import { VaultProvider } from './contexts/VaultContext';
 import { ProtectedRoute } from './components/layout/ProtectedRoute';
 import { LenisScrollManager } from './components/layout/LenisScrollManager';
@@ -39,8 +39,6 @@ const CoursePlayerPage  = lazy(() => import('./pages/CoursePlayerPage').then((m)
 const CertificatePage   = lazy(() => import('./pages/CertificatePage').then((m) => ({ default: m.CertificatePage })));
 const PortfolioPage     = lazy(() => import('./pages/PortfolioPage').then((m) => ({ default: m.PortfolioPage })));
 const CourseSharePage   = lazy(() => import('./pages/CourseSharePage').then((m) => ({ default: m.CourseSharePage })));
-const LandingPage            = lazy(() => import('./pages/landing/LandingPage'));
-const PricingPage            = lazy(() => import('./pages/landing/PricingPage'));
 const ExplorePromptsPage     = lazy(() => import('./pages/ExplorePromptsPage').then((m) => ({ default: m.ExplorePromptsPage })));
 const PublicCertificatePage  = lazy(() => import('./pages/PublicCertificatePage').then((m) => ({ default: m.PublicCertificatePage })));
 const PublicPortfolioPage    = lazy(() => import('./pages/PublicPortfolioPage').then((m) => ({ default: m.PublicPortfolioPage })));
@@ -78,9 +76,7 @@ const queryClient = new QueryClient({
 });
 
 function RootGate() {
-  const { user, loading } = useAuth();
-  if (loading) return <PageFallback />;
-  return user ? <Navigate to="/dashboard" replace /> : <LandingPage />;
+  return <Navigate to="/dashboard" replace />;
 }
 
 function PageFallback() {
@@ -110,7 +106,6 @@ export default function App() {
           <Suspense fallback={<PageFallback />}>
             <Routes>
               <Route path="/" element={<RootGate />} />
-              <Route path="/pricing" element={<PricingPage />} />
               <Route path="/login" element={<LoginPage />} />
               <Route path="/signup" element={<SignupPage />} />
               <Route path="/forgot-password" element={<ForgotPasswordPage />} />
