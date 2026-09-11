@@ -19,7 +19,7 @@ function TermsContent() {
         By accessing or using aiwithrakshith.tech ("the Service"), you agree to be bound by these Terms of Service. If you do not agree to all of the terms and conditions, you must not use the Service.
       </Section>
       <Section n={2} title="Description of Service">
-        aiwithrakshith.tech provides an AI prompt management platform that allows users to create, store, organize, and share AI prompts, manage projects, track tasks, and access educational courses.
+        aiwithrakshith.tech provides an AI prompt management platform that allows users to create, store, organize, and share AI prompts.
       </Section>
       <Section n={3} title="User Accounts">
         <BulletList icon="check_circle" color="text-brand-400" items={[
@@ -65,7 +65,7 @@ function PrivacyContent() {
           {[
             { label: 'Account Information', desc: 'Email address and hashed password when you register.' },
             { label: 'Profile Information', desc: 'Display name and avatar image you optionally provide.' },
-            { label: 'User Content', desc: 'Prompts, projects, notes, todos, courses, and uploaded files.' },
+            { label: 'User Content', desc: 'Prompts and uploaded media files.' },
             { label: 'Usage Data', desc: 'Log data including IP address, browser type, and actions within the Service.' },
           ].map((item, i) => (
             <div key={i} className="p-3 bg-ink-100 rounded-md border border-ink-300">
@@ -84,7 +84,7 @@ function PrivacyContent() {
         ]} />
       </Section>
       <Section n={3} title="Data Storage & Security">
-        Your data is stored securely using Supabase with encryption at rest and in transit. Passwords are stored as bcrypt hashes. Password vault entries are encrypted client-side with AES-256-GCM before storage — we cannot read them.
+        Your data is stored securely using Supabase with encryption at rest and in transit. Passwords are stored as bcrypt hashes.
       </Section>
       <Section n={4} title="Data Sharing">
         We do not sell your personal data. We share data only with service providers necessary to operate the platform (Supabase, Resend) and law enforcement when required by law.
@@ -133,13 +133,6 @@ function RefundContent() {
             </div>
           ))}
         </div>
-      </Section>
-      <Section n={3} title="Course Purchases">
-        <BulletList icon="check_circle" color="text-brand-400" items={[
-          'Refunds within 30 days if less than 30% of course content consumed.',
-          'No refund once a completion certificate has been generated.',
-          'Refunds processed to original payment method within 5-10 business days.',
-        ]} />
       </Section>
       <Section n={4} title="Non-Refundable Situations">
         <BulletList icon="cancel" color="text-danger" items={[

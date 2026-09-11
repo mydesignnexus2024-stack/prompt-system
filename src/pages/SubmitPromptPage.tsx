@@ -5,10 +5,12 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import { toast } from 'sonner';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Upload, X, Film, ImageIcon, CheckCircle2, ChevronDown } from 'lucide-react';
+import { Upload, X, Film, ImageIcon, ChevronDown } from 'lucide-react';
 import { supabase } from '../lib/supabase';
+import { useAuth } from '../contexts/AuthContext';
 import { Button } from '../components/ui/Button';
 import { Input, Textarea } from '../components/ui/Input';
+import { AuthModal } from '../components/ui/AuthModal';
 import { cn } from '../lib/utils';
 
 // ── Constants ─────────────────────────────────────────────────────────────────
@@ -22,7 +24,7 @@ const MAX_FILE_SIZE = 100 * 1024 * 1024; // 100 MB
 const schema = z.object({
   submitter_name: z.string().min(1, 'Your name is required').max(100),
   submitter_email: z.string().email('Enter a valid email').optional().or(z.literal('')),
-  platform: z.string().min(1, 'Select a platform'),
+  platform: z.string().optional(),
   title: z.string().min(1, 'Title is required').max(200),
   prompt_text: z.string().min(1, 'Prompt text is required'),
   notes: z.string().optional(),
@@ -248,6 +250,7 @@ function PlatformSelect({
 // ── Main page ─────────────────────────────────────────────────────────────────
 
 export function SubmitPromptPage() {
+  const { user } = useAuth();
   const [promptType, setPromptType] = useState<'video' | 'image'>('video');
   const [platform, setPlatform] = useState('');
   const [tags, setTags] = useState<string[]>([]);
@@ -256,6 +259,7 @@ export function SubmitPromptPage() {
   const [uploading, setUploading] = useState(false);
   const [uploadProgress, setUploadProgress] = useState(0);
   const [submitted, setSubmitted] = useState(false);
+  const [authOpen, setAuthOpen] = useState(false);
 
   const platforms = promptType === 'video' ? VIDEO_PLATFORMS : IMAGE_PLATFORMS;
 
@@ -301,6 +305,7 @@ export function SubmitPromptPage() {
   };
 
   const onSubmit = async (data: FormData) => {
+    if (!user) { setAuthOpen(true); return; }
     if (!platform) { toast.error('Please select a platform'); return; }
 
     let mediaPath: string | null = null;
@@ -488,6 +493,23 @@ export function SubmitPromptPage() {
             </div>
           </div>
 
+          {/* Sign-in banner for guests */}
+          {!user && (
+            <div className="rounded-xl border border-brand-200 bg-brand-50 p-4 flex items-center gap-3">
+              <div className="flex-1">
+                <p className="text-sm font-medium text-brand-800">Sign in to submit your prompt</p>
+                <p className="text-xs text-brand-600 mt-0.5">You need an account to share prompts with the community.</p>
+              </div>
+              <button
+                type="button"
+                onClick={() => setAuthOpen(true)}
+                className="px-4 py-2 rounded-lg bg-brand-400 text-white text-sm font-semibold hover:bg-brand-500 transition-colors flex-shrink-0"
+              >
+                Sign in
+              </button>
+            </div>
+          )}
+
           {/* Prompt details */}
           <div className="rounded-xl border border-ink-200 p-5 space-y-4">
             <h2 className="text-sm font-semibold text-ink-700 uppercase tracking-wide">Prompt details</h2>
@@ -551,6 +573,11 @@ export function SubmitPromptPage() {
                 `Uploading… ${uploadProgress}%`
               ) : isSubmitting ? (
                 'Submitting…'
+              ) : !user ? (
+                <>
+                  <Upload size={16} />
+                  Sign in to Submit
+                </>
               ) : (
                 <>
                   <Upload size={16} />
@@ -564,6 +591,8 @@ export function SubmitPromptPage() {
           </div>
         </form>
       </div>
+
+      <AuthModal open={authOpen} onClose={() => setAuthOpen(false)} defaultTab="login" />
     </div>
   );
 }
