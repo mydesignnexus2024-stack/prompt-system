@@ -352,16 +352,62 @@ export function SubmitPromptPage() {
         <motion.div
           initial={{ opacity: 0, scale: 0.9 }}
           animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
           className="max-w-md"
         >
-          <div className="w-16 h-16 rounded-full bg-green-100 flex items-center justify-center mx-auto mb-4">
-            <CheckCircle2 size={32} className="text-green-500" />
+          <div className="relative w-20 h-20 mx-auto mb-5">
+            <motion.div
+              initial={{ scale: 0 }}
+              animate={{ scale: 1 }}
+              transition={{ type: 'spring', stiffness: 400, damping: 18, delay: 0.1 }}
+              className="absolute inset-0 rounded-full bg-green-100 flex items-center justify-center"
+            />
+            <motion.div
+              initial={{ scale: 0, rotate: -45 }}
+              animate={{ scale: 1, rotate: 0 }}
+              transition={{ type: 'spring', stiffness: 500, damping: 16, delay: 0.2 }}
+              className="absolute inset-0 flex items-center justify-center"
+            >
+              <svg width="40" height="40" viewBox="0 0 40 40" fill="none">
+                <motion.circle
+                  cx="20" cy="20" r="18" stroke="#22c55e" strokeWidth="2.5"
+                  initial={{ pathLength: 0 }}
+                  animate={{ pathLength: 1 }}
+                  transition={{ duration: 0.4, delay: 0.25, ease: 'easeOut' }}
+                />
+                <motion.path
+                  d="M12 20.5 L17 25 L28 14.5"
+                  stroke="#22c55e" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"
+                  fill="none"
+                  initial={{ pathLength: 0 }}
+                  animate={{ pathLength: 1 }}
+                  transition={{ duration: 0.3, delay: 0.5, ease: 'easeOut' }}
+                />
+              </svg>
+            </motion.div>
           </div>
-          <h1 className="text-2xl font-display font-extrabold text-ink-900 tracking-tight mb-2">Submission received!</h1>
-          <p className="text-ink-500 mb-6">
+          <motion.h1
+            initial={{ opacity: 0, y: 8 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.6, duration: 0.25 }}
+            className="text-2xl font-display font-extrabold text-ink-900 tracking-tight mb-2"
+          >
+            Submission received!
+          </motion.h1>
+          <motion.p
+            initial={{ opacity: 0, y: 8 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.7, duration: 0.25 }}
+            className="text-ink-500 mb-6"
+          >
             Thank you for sharing your prompt. Our team will review it and, if approved, it will appear in the Explore feed.
-          </p>
-          <div className="flex flex-col sm:flex-row gap-3 justify-center">
+          </motion.p>
+          <motion.div
+            initial={{ opacity: 0, y: 8 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.8, duration: 0.25 }}
+            className="flex flex-col sm:flex-row gap-3 justify-center"
+          >
             <button
               onClick={() => setSubmitted(false)}
               className="px-5 py-2.5 rounded-xl border border-ink-300 text-sm font-semibold text-ink-700 hover:bg-ink-50 transition-colors"
@@ -374,7 +420,7 @@ export function SubmitPromptPage() {
             >
               Browse prompts
             </Link>
-          </div>
+          </motion.div>
         </motion.div>
       </div>
     );
@@ -501,8 +547,16 @@ export function SubmitPromptPage() {
               className="w-full"
               size="lg"
             >
-              <Upload size={16} />
-              {uploading ? `Uploading… ${uploadProgress}%` : 'Submit Prompt'}
+              {uploading ? (
+                `Uploading… ${uploadProgress}%`
+              ) : isSubmitting ? (
+                'Submitting…'
+              ) : (
+                <>
+                  <Upload size={16} />
+                  Submit Prompt
+                </>
+              )}
             </Button>
             <p className="text-xs text-ink-400 text-center">
               Submissions are reviewed before appearing publicly. By submitting you agree to share this prompt with the community.
