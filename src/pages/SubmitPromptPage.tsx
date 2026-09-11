@@ -544,7 +544,7 @@ export function SubmitPromptPage() {
               type="submit"
               loading={isSubmitting || uploading}
               disabled={isSubmitting || uploading}
-              className="w-full"
+              className="w-full hover:-translate-y-0.5 hover:shadow-lg"
               size="lg"
             >
               {uploading ? (
