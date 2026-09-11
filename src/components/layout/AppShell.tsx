@@ -40,7 +40,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
   const handleSignOut = async () => {
     setUserMenuOpen(false);
     await signOut();
-    navigate('/explore');
+    navigate('/');
   };
 
   return (
@@ -51,7 +51,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
       <header className="fixed top-0 left-0 right-0 z-30 h-14 bg-white/80 backdrop-blur-md border-b border-ink-200">
         <div className="h-full flex items-center justify-between px-4 sm:px-6">
           {/* Logo — top left */}
-          <Link to="/explore" className="flex items-center gap-2.5">
+          <Link to="/" className="flex items-center gap-2.5">
             <img src="/aiwithrakshith-tech-logo.webp" alt="aiwithrakshith.tech" className="h-8 w-8 object-contain flex-shrink-0" />
             <span className="font-display font-black text-ink-900 tracking-tight leading-none" style={{ fontSize: '13px', letterSpacing: '-0.02em' }}>
               aiwithrakshith

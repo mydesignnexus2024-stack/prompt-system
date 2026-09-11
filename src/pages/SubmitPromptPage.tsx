@@ -415,7 +415,7 @@ export function SubmitPromptPage() {
               Submit another
             </button>
             <Link
-              to="/explore"
+              to="/"
               className="px-5 py-2.5 rounded-xl bg-ink-900 text-sm font-semibold text-white hover:bg-ink-800 transition-colors"
             >
               Browse prompts
@@ -435,7 +435,7 @@ export function SubmitPromptPage() {
             <h1 className="text-xl font-display font-extrabold text-ink-900 tracking-tight">Submit a Master Prompt</h1>
             <p className="text-sm text-ink-500 mt-0.5">Share your best AI prompt with the community</p>
           </div>
-          <Link to="/explore" className="text-sm text-ink-500 hover:text-ink-900 transition-colors flex-shrink-0">
+          <Link to="/" className="text-sm text-ink-500 hover:text-ink-900 transition-colors flex-shrink-0">
             ← Back to Explore
           </Link>
         </div>

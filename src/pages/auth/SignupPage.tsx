@@ -176,7 +176,7 @@ function OtpScreen({
       }
 
       toast.success('Account verified! Welcome.');
-      navigate('/explore', { replace: true });
+      navigate('/', { replace: true });
     } catch {
       toast.error('Something went wrong. Please try again.');
     } finally {

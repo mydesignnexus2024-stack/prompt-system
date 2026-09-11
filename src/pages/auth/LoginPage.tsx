@@ -122,7 +122,7 @@ export function LoginPage() {
     }
 
     if (authData.session) {
-      navigate('/explore');
+      navigate('/');
     }
   };
 

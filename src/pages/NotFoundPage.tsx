@@ -58,7 +58,7 @@ export function NotFoundPage() {
             Back to home
           </Link>
           <Link
-            to="/explore"
+            to="/"
             className="flex items-center gap-2 border border-ink-300 text-ink-700 font-semibold text-sm px-6 py-3 rounded-xl hover:border-ink-700 hover:text-ink-900 transition-colors w-full sm:w-auto justify-center"
           >
             Go to dashboard

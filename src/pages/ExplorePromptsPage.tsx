@@ -934,10 +934,10 @@ export function ExplorePromptsPage() {
               {/* Submit prompt CTA */}
               <Link
                 to="/submit"
-                className="flex-shrink-0 flex items-center gap-1.5 px-3 py-1.5 text-[12px] font-semibold text-white bg-ink-900 hover:bg-ink-700 rounded-full transition-colors"
+                className="flex-shrink-0 flex items-center gap-1.5 px-4 py-2 text-[13px] font-bold text-white bg-ink-900 hover:bg-ink-700 rounded-full transition-all hover:shadow-lg hover:shadow-ink-900/20 active:scale-95"
               >
-                <Upload size={12} />
-                <span className="hidden sm:inline">Submit</span>
+                <Upload size={14} />
+                <span>Submit Prompt</span>
               </Link>
             </div>
           </div>
@@ -968,7 +968,7 @@ export function ExplorePromptsPage() {
               </p>
               {!(search || activePlatform !== 'All') && (
                 <Link
-                  to="/explore"
+                  to="/"
                   className="mt-5 bg-ink-900 text-white text-xs font-semibold px-4 py-2 rounded-xl hover:bg-ink-700 transition-colors"
                 >
                   Go to my prompts

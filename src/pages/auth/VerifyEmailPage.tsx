@@ -64,7 +64,7 @@ export function VerifyEmailPage() {
     if (state !== 'success') return;
     const interval = setInterval(() => {
       setCountdown((c) => {
-        if (c <= 1) { clearInterval(interval); navigate('/explore', { replace: true }); return 0; }
+        if (c <= 1) { clearInterval(interval); navigate('/', { replace: true }); return 0; }
         return c - 1;
       });
     }, 1000);
@@ -239,7 +239,7 @@ export function VerifyEmailPage() {
                 </p>
               </div>
 
-              <Button variant="primary" className="w-full" onClick={() => navigate('/explore', { replace: true })}>
+              <Button variant="primary" className="w-full" onClick={() => navigate('/', { replace: true })}>
                 <Icon name="explore" size={15} />
                 Go to Explore Now
               </Button>

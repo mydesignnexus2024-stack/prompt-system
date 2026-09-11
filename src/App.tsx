@@ -63,7 +63,7 @@ const queryClient = new QueryClient({
 });
 
 function RootGate() {
-  return <Navigate to="/explore" replace />;
+  return <ExplorePromptsPage />;
 }
 
 function PageFallback() {
@@ -92,6 +92,7 @@ export default function App() {
           <Suspense fallback={<PageFallback />}>
             <Routes>
               <Route path="/" element={<RootGate />} />
+              <Route path="/explore" element={<Navigate to="/" replace />} />
               <Route path="/login" element={<LoginPage />} />
               <Route path="/signup" element={<SignupPage />} />
               <Route path="/forgot-password" element={<ForgotPasswordPage />} />
@@ -107,14 +108,13 @@ export default function App() {
               <Route path="/submit" element={<SubmitPromptPage />} />
 
               <Route element={<ProtectedRoute />}>
-                <Route path="/projects" element={<Navigate to="/explore" replace />} />
+                <Route path="/projects" element={<Navigate to="/" replace />} />
                 <Route path="/projects/:slug" element={<ProjectPage />} />
                 <Route path="/projects/:slug/files" element={<ProjectFilesPage />} />
                 <Route path="/projects/:slug/new" element={<NewPromptPage />} />
                 <Route path="/projects/:slug/pages/:pageId" element={<NotionPageEditor />} />
                 <Route path="/prompts/:id" element={<PromptDetailPage />} />
                 <Route path="/prompts/:id/edit" element={<EditPromptPage />} />
-                <Route path="/explore" element={<ExplorePromptsPage />} />
                 <Route path="/settings" element={<SettingsPage />} />
               </Route>
 
