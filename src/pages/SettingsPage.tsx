@@ -49,6 +49,7 @@ import type { Project } from '../lib/database.types';
 import { ProjectActionModal } from '../components/projects/ProjectActionModal';
 
 const pwSchema = z.object({
+  currentPassword: z.string({ error: 'Current password is required' }).min(1, 'Current password is required'),
   newPassword: z.string().min(8, 'Password must be at least 8 characters'),
   confirmPassword: z.string(),
 }).refine((d) => d.newPassword === d.confirmPassword, {
@@ -386,6 +387,16 @@ export function SettingsPage() {
   });
 
   const handlePasswordChange = async (data: PwForm) => {
+    if (!user?.email) { toast.error('Not signed in'); return; }
+    // Verify current password by re-authenticating
+    const { error: verifyError } = await supabase.auth.signInWithPassword({
+      email: user.email,
+      password: data.currentPassword,
+    });
+    if (verifyError) {
+      toast.error('Current password is incorrect');
+      return;
+    }
     const { error } = await supabase.auth.updateUser({ password: data.newPassword });
     if (error) { toast.error(error.message); return; }
     toast.success('Password updated!');
@@ -612,12 +623,12 @@ export function SettingsPage() {
           <form onSubmit={pwForm.handleSubmit(handlePasswordChange)} className="space-y-4">
             <div className="relative">
               <Input
-                label="New Password"
+                label="Current Password"
                 type={showPw ? 'text' : 'password'}
-                placeholder="Min. 8 characters"
-                error={pwForm.formState.errors.newPassword?.message}
+                placeholder="Enter your current password"
+                error={pwForm.formState.errors.currentPassword?.message}
                 className="pr-11"
-                {...pwForm.register('newPassword')}
+                {...pwForm.register('currentPassword')}
               />
               <button
                 type="button"
@@ -628,9 +639,16 @@ export function SettingsPage() {
               </button>
             </div>
             <Input
+              label="New Password"
+              type={showPw ? 'text' : 'password'}
+              placeholder="Min. 8 characters"
+              error={pwForm.formState.errors.newPassword?.message}
+              {...pwForm.register('newPassword')}
+            />
+            <Input
               label="Confirm New Password"
               type="password"
-              placeholder="Repeat your password"
+              placeholder="Repeat your new password"
               error={pwForm.formState.errors.confirmPassword?.message}
               {...pwForm.register('confirmPassword')}
             />

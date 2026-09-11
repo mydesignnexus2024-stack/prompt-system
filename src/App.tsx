@@ -29,6 +29,7 @@ const EditPromptPage    = lazy(() => import('./pages/EditPromptPage').then((m) =
 const NotionPageEditor  = lazy(() => import('./pages/NotionPageEditor').then((m) => ({ default: m.NotionPageEditor })));
 const SharePage         = lazy(() => import('./pages/SharePage').then((m) => ({ default: m.SharePage })));
 const ExplorePromptsPage     = lazy(() => import('./pages/ExplorePromptsPage').then((m) => ({ default: m.ExplorePromptsPage })));
+const SettingsPage        = lazy(() => import('./pages/SettingsPage').then((m) => ({ default: m.SettingsPage })));
 
 // Re-throws chunk-load errors so the root ErrorBoundary in main.tsx catches them
 // and shows the "App updated — please reload" screen instead of a blank skeleton.
@@ -112,6 +113,7 @@ export default function App() {
                 <Route path="/prompts/:id" element={<PromptDetailPage />} />
                 <Route path="/prompts/:id/edit" element={<EditPromptPage />} />
                 <Route path="/explore" element={<ExplorePromptsPage />} />
+                <Route path="/settings" element={<SettingsPage />} />
               </Route>
 
               <Route path="*" element={<NotFoundPage />} />
