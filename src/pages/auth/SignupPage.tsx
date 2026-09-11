@@ -320,22 +320,29 @@ export function SignupPage() {
       return;
     }
 
-    const res = await fetch(`${supabaseUrl}/functions/v1/send-otp`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ email: data.email, captcha_token: token }),
-    });
-    const json = await res.json();
-    if (!res.ok || !json.success) {
-      toast.error(json.error ?? 'Failed to send verification code');
+    try {
+      const res = await fetch(`${supabaseUrl}/functions/v1/send-otp`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email: data.email, captcha_token: token }),
+      });
+      const json = await res.json();
+      if (!res.ok || !json.success) {
+        toast.error(json.error ?? 'Failed to send verification code');
+        resetTurnstile();
+        setCaptchaToken(null);
+        captchaRef.current = null;
+        return;
+      }
+      setSubmittedEmail(data.email);
+      setSubmittedPassword(data.password);
+      setOtpSent(true);
+    } catch {
+      toast.error('Network error. Check your connection and try again.');
       resetTurnstile();
       setCaptchaToken(null);
       captchaRef.current = null;
-      return;
     }
-    setSubmittedEmail(data.email);
-    setSubmittedPassword(data.password);
-    setOtpSent(true);
   };
 
   return (

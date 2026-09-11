@@ -10,6 +10,29 @@ const ALLOWED_ORIGINS = new Set([
   "http://localhost:3000",
 ]);
 
+// Add env-var-based origins so preview/staging environments work without code changes
+for (const envKey of ["APP_URL", "SITE_URL"]) {
+  const val = Deno.env.get(envKey);
+  if (val) {
+    try {
+      const u = new URL(val);
+      ALLOWED_ORIGINS.add(u.origin);
+    } catch { /* ignore malformed */ }
+  }
+}
+
+function isAllowedOrigin(origin: string): boolean {
+  if (ALLOWED_ORIGINS.has(origin)) return true;
+  try {
+    const u = new URL(origin);
+    // Allow bolt.new preview subdomains and netlify preview deploys
+    if (u.hostname.endsWith(".bolt.new") || u.hostname.endsWith(".netlify.app")) {
+      return true;
+    }
+  } catch { /* ignore */ }
+  return false;
+}
+
 /**
  * Build CORS headers based on request origin.
  * isPublic=true → wildcard (for share/course-share read-only endpoints)
@@ -30,7 +53,7 @@ export function buildCorsHeaders(
     return { ...base, "Access-Control-Allow-Origin": "*" };
   }
 
-  if (origin && ALLOWED_ORIGINS.has(origin)) {
+  if (origin && isAllowedOrigin(origin)) {
     return { ...base, "Access-Control-Allow-Origin": origin };
   }
 
