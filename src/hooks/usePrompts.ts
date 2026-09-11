@@ -190,8 +190,9 @@ export function useUpdatePrompt() {
         .update(input)
         .eq('id', id)
         .select()
-        .single();
+        .maybeSingle();
       if (error) throw error;
+      if (!data) throw new Error('Prompt not found or you do not have permission to edit it.');
       return data as Prompt;
     },
     onMutate: async ({ id, ...input }) => {

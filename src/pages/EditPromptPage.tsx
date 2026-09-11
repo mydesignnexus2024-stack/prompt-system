@@ -95,8 +95,9 @@ export function EditPromptPage() {
       await updatePrompt.mutateAsync({ id, ...data, tags, notes: data.notes || null, is_published: isPublished });
       toast.success('Prompt updated!');
       navigate(`/prompts/${id}`);
-    } catch {
-      toast.error('Failed to update prompt');
+    } catch (err) {
+      console.error('[edit-prompt] update error:', err);
+      toast.error(err instanceof Error ? err.message : 'Failed to update prompt');
     }
   };
 

@@ -1,4 +1,4 @@
-import { useState, useRef } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -188,6 +188,15 @@ function PlatformSelect({
   const [open, setOpen] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
 
+  useEffect(() => {
+    if (!open) return;
+    const handleClickOutside = (e: MouseEvent) => {
+      if (ref.current && !ref.current.contains(e.target as Node)) setOpen(false);
+    };
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, [open]);
+
   return (
     <div className="space-y-1" ref={ref}>
       <label className="text-sm font-medium text-ink-700 block">Platform *</label>
@@ -325,7 +334,8 @@ export function SubmitPromptPage() {
     });
 
     if (error) {
-      toast.error('Submission failed. Please try again.');
+      console.error('[submit-prompt] insert error:', error);
+      toast.error(error.message || 'Submission failed. Please try again.');
       return;
     }
 
@@ -441,7 +451,7 @@ export function SubmitPromptPage() {
               value={platform}
               onChange={setPlatform}
               placeholder="Select AI tool / platform"
-              error={!platform && undefined}
+              error={!platform ? 'Please select a platform' : undefined}
             />
 
             <Input
