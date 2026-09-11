@@ -30,6 +30,7 @@ const NotionPageEditor  = lazy(() => import('./pages/NotionPageEditor').then((m)
 const SharePage         = lazy(() => import('./pages/SharePage').then((m) => ({ default: m.SharePage })));
 const ExplorePromptsPage     = lazy(() => import('./pages/ExplorePromptsPage').then((m) => ({ default: m.ExplorePromptsPage })));
 const SettingsPage        = lazy(() => import('./pages/SettingsPage').then((m) => ({ default: m.SettingsPage })));
+const SubmitPromptPage    = lazy(() => import('./pages/SubmitPromptPage').then((m) => ({ default: m.SubmitPromptPage })));
 
 // Re-throws chunk-load errors so the root ErrorBoundary in main.tsx catches them
 // and shows the "App updated — please reload" screen instead of a blank skeleton.
@@ -103,6 +104,7 @@ export default function App() {
 
               {/* Standalone pages — no AppShell wrapper */}
               <Route path="/share/:shareId" element={<SharePage />} />
+              <Route path="/submit" element={<SubmitPromptPage />} />
 
               <Route element={<ProtectedRoute />}>
                 <Route path="/projects" element={<Navigate to="/explore" replace />} />

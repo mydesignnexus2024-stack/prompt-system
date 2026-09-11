@@ -5,7 +5,7 @@ import {
   Search, Globe, Copy, Check, Sparkles, X,
   ChevronLeft, ChevronRight, Image as ImageIcon,
   Heart, Eye, MessageCircle, Send, Trash2, User,
-  BarChart2, Layers, Download,
+  BarChart2, Layers, Download, Upload,
 } from 'lucide-react';
 import { toast } from 'sonner';
 import {
@@ -930,6 +930,15 @@ export function ExplorePromptsPage() {
                   className="w-36 sm:w-48 pl-7 pr-3 py-1.5 text-[12px] border border-ink-200 rounded-full bg-white focus:outline-none focus:ring-2 focus:ring-ink-900/15 focus:border-ink-400 placeholder:text-ink-400 text-ink-900 transition-all"
                 />
               </div>
+
+              {/* Submit prompt CTA */}
+              <Link
+                to="/submit"
+                className="flex-shrink-0 flex items-center gap-1.5 px-3 py-1.5 text-[12px] font-semibold text-white bg-ink-900 hover:bg-ink-700 rounded-full transition-colors"
+              >
+                <Upload size={12} />
+                <span className="hidden sm:inline">Submit</span>
+              </Link>
             </div>
           </div>
         </div>

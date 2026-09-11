@@ -36,7 +36,8 @@ async function uploadWithProgress(
     xhr.send(file);
   });
 }
-import { Bug } from 'lucide-react';
+import { Bug, Film, ImageIcon, CheckCircle2, XCircle, Clock } from 'lucide-react';
+import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { Button } from '../components/ui/Button';
 import { Input } from '../components/ui/Input';
 import { Modal, ConfirmModal } from '../components/ui/Modal';
@@ -304,6 +305,195 @@ function NotificationsSection() {
           />
         </button>
       </div>
+    </section>
+  );
+}
+
+// ── Community Submissions Review ────────────────────────────────────────────
+
+interface Submission {
+  id: string;
+  submitter_name: string;
+  submitter_email: string | null;
+  prompt_type: 'video' | 'image';
+  platform: string;
+  title: string;
+  prompt_text: string;
+  notes: string | null;
+  tags: string[];
+  media_path: string | null;
+  media_type: 'image' | 'video' | null;
+  status: 'pending' | 'approved' | 'rejected';
+  reviewer_notes: string | null;
+  created_at: string;
+}
+
+function SubmissionsSection() {
+  const qc = useQueryClient();
+  const [expanded, setExpanded] = useState<string | null>(null);
+
+  const { data: submissions = [], isLoading } = useQuery({
+    queryKey: ['community-submissions'],
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from('community_submissions')
+        .select('*')
+        .order('created_at', { ascending: false });
+      if (error) throw error;
+      return data as Submission[];
+    },
+  });
+
+  const updateStatus = useMutation({
+    mutationFn: async ({ id, status }: { id: string; status: 'approved' | 'rejected' }) => {
+      const { error } = await supabase
+        .from('community_submissions')
+        .update({ status })
+        .eq('id', id);
+      if (error) throw error;
+    },
+    onSuccess: () => qc.invalidateQueries({ queryKey: ['community-submissions'] }),
+  });
+
+  const pending = submissions.filter((s) => s.status === 'pending');
+  const reviewed = submissions.filter((s) => s.status !== 'pending');
+
+  const handleApprove = async (id: string) => {
+    try {
+      await updateStatus.mutateAsync({ id, status: 'approved' });
+      toast.success('Submission approved');
+    } catch { toast.error('Failed to update'); }
+  };
+
+  const handleReject = async (id: string) => {
+    try {
+      await updateStatus.mutateAsync({ id, status: 'rejected' });
+      toast.success('Submission rejected');
+    } catch { toast.error('Failed to update'); }
+  };
+
+  const statusIcon = (s: Submission['status']) => {
+    if (s === 'approved') return <CheckCircle2 size={14} className="text-green-500" />;
+    if (s === 'rejected') return <XCircle size={14} className="text-danger" />;
+    return <Clock size={14} className="text-amber-500" />;
+  };
+
+  const SubmissionRow = ({ sub }: { sub: Submission }) => {
+    const isOpen = expanded === sub.id;
+    const mediaUrl = sub.media_path
+      ? `${import.meta.env.VITE_SUPABASE_URL}/storage/v1/object/public/submission-media/${sub.media_path}`
+      : null;
+
+    return (
+      <div className="border border-ink-200 rounded-lg overflow-hidden">
+        <button
+          type="button"
+          onClick={() => setExpanded(isOpen ? null : sub.id)}
+          className="w-full flex items-center gap-3 px-4 py-3 hover:bg-ink-50 transition-colors text-left"
+        >
+          {sub.prompt_type === 'video' ? <Film size={15} className="text-blue-500 flex-shrink-0" /> : <ImageIcon size={15} className="text-pink-500 flex-shrink-0" />}
+          <div className="flex-1 min-w-0">
+            <p className="text-sm font-medium text-ink-900 truncate">{sub.title}</p>
+            <p className="text-xs text-ink-500">{sub.submitter_name} · {sub.platform} · {new Date(sub.created_at).toLocaleDateString()}</p>
+          </div>
+          <span className={cn('flex items-center gap-1 text-xs font-medium px-2 py-0.5 rounded-full flex-shrink-0',
+            sub.status === 'approved' ? 'bg-green-50 text-green-700' :
+            sub.status === 'rejected' ? 'bg-red-50 text-danger' : 'bg-amber-50 text-amber-700'
+          )}>
+            {statusIcon(sub.status)} {sub.status}
+          </span>
+        </button>
+
+        <AnimatePresence>
+          {isOpen && (
+            <motion.div
+              initial={{ height: 0, opacity: 0 }}
+              animate={{ height: 'auto', opacity: 1 }}
+              exit={{ height: 0, opacity: 0 }}
+              transition={{ duration: 0.2 }}
+              className="overflow-hidden"
+            >
+              <div className="border-t border-ink-200 px-4 py-4 space-y-3 bg-ink-50/50">
+                {sub.submitter_email && (
+                  <p className="text-xs text-ink-500">Email: <span className="text-ink-700">{sub.submitter_email}</span></p>
+                )}
+                <div>
+                  <p className="text-xs font-medium text-ink-500 mb-1">Prompt text</p>
+                  <pre className="text-sm text-ink-800 whitespace-pre-wrap font-sans bg-white rounded-md border border-ink-200 p-3 max-h-40 overflow-y-auto">{sub.prompt_text}</pre>
+                </div>
+                {sub.notes && (
+                  <div>
+                    <p className="text-xs font-medium text-ink-500 mb-1">Notes</p>
+                    <p className="text-sm text-ink-700">{sub.notes}</p>
+                  </div>
+                )}
+                {sub.tags.length > 0 && (
+                  <div className="flex flex-wrap gap-1">
+                    {sub.tags.map((t) => <span key={t} className="text-xs bg-brand-50 text-brand-700 px-2 py-0.5 rounded-full">#{t}</span>)}
+                  </div>
+                )}
+                {mediaUrl && sub.media_type === 'image' && (
+                  <img src={mediaUrl} alt="Submission" className="max-h-48 rounded-lg border border-ink-200 object-contain" />
+                )}
+                {mediaUrl && sub.media_type === 'video' && (
+                  <video src={mediaUrl} controls className="w-full max-h-48 rounded-lg border border-ink-200" />
+                )}
+                {sub.status === 'pending' && (
+                  <div className="flex gap-2 pt-1">
+                    <button
+                      onClick={() => handleApprove(sub.id)}
+                      disabled={updateStatus.isPending}
+                      className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold text-white bg-green-600 hover:bg-green-700 rounded-lg transition-colors disabled:opacity-60"
+                    >
+                      <CheckCircle2 size={13} /> Approve
+                    </button>
+                    <button
+                      onClick={() => handleReject(sub.id)}
+                      disabled={updateStatus.isPending}
+                      className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold text-danger border border-red-200 hover:bg-red-50 rounded-lg transition-colors disabled:opacity-60"
+                    >
+                      <XCircle size={13} /> Reject
+                    </button>
+                  </div>
+                )}
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
+      </div>
+    );
+  };
+
+  return (
+    <section className="bg-white border border-ink-300 rounded-lg p-4 sm:p-5 space-y-4">
+      <div className="flex items-center gap-3 pb-3 border-b border-ink-300">
+        <Icon name="inbox" size={18} className="text-brand-400 flex-shrink-0" />
+        <h2 className="font-display font-semibold text-ink-900">Community Submissions</h2>
+        {pending.length > 0 && (
+          <span className="ml-auto text-xs font-bold text-white bg-amber-500 rounded-full px-2 py-0.5">{pending.length} pending</span>
+        )}
+      </div>
+
+      {isLoading ? (
+        <p className="text-sm text-ink-500 text-center py-4">Loading…</p>
+      ) : submissions.length === 0 ? (
+        <p className="text-sm text-ink-500 text-center py-4">No submissions yet.</p>
+      ) : (
+        <div className="space-y-3">
+          {pending.length > 0 && (
+            <div className="space-y-2">
+              <p className="text-xs font-semibold text-ink-500 uppercase tracking-wide">Pending review</p>
+              {pending.map((s) => <SubmissionRow key={s.id} sub={s} />)}
+            </div>
+          )}
+          {reviewed.length > 0 && (
+            <div className="space-y-2">
+              <p className="text-xs font-semibold text-ink-500 uppercase tracking-wide">Reviewed</p>
+              {reviewed.map((s) => <SubmissionRow key={s.id} sub={s} />)}
+            </div>
+          )}
+        </div>
+      )}
     </section>
   );
 }
@@ -743,6 +933,9 @@ export function SettingsPage() {
             </button>
           </div>
         </section>
+
+        {/* ── Community Submissions ───────────────────────────────────── */}
+        <SubmissionsSection />
 
         {/* ── Report a bug ────────────────────────────────────────────── */}
         <section className="bg-white border border-ink-200 rounded-lg p-4 sm:p-5">
